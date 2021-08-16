@@ -28,6 +28,10 @@ public class Int2DArray {
         return height * width;
     }
 
+    public int get(final IntPair coordinate) {
+        return get(coordinate.first, coordinate.second);
+    }
+
     public int get(int y, int x) {
         checkY(y);
         checkX(x);

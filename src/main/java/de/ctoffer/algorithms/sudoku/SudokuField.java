@@ -1,8 +1,12 @@
 package de.ctoffer.algorithms.sudoku;
 
+import de.ctoffer.algorithms.Copyable;
 import de.ctoffer.datastructures.Int2DArray;
+import de.ctoffer.utils.IntPair;
 
-public class SudokuField extends Int2DArray {
+import java.util.Optional;
+
+public class SudokuField extends Int2DArray implements Copyable<SudokuField> {
     public SudokuField() {
         super(9, 9);
     }
@@ -17,17 +21,17 @@ public class SudokuField extends Int2DArray {
     public static SudokuField initializeSimple() {
         final var field = new SudokuField();
 
-        field.setRow(0, 5, 3, 0,  0, 7, 0,  0, 0, 0);
-        field.setRow(1, 6, 0, 0,  1, 9, 5,  0, 0, 0);
-        field.setRow(2, 0, 9, 8,  0, 0, 0,  0, 6, 0);
+        field.setRow(0, 5, 3, 0, 0, 7, 0, 0, 0, 0);
+        field.setRow(1, 6, 0, 0, 1, 9, 5, 0, 0, 0);
+        field.setRow(2, 0, 9, 8, 0, 0, 0, 0, 6, 0);
 
-        field.setRow(3, 8, 0, 0,  0, 6, 0,  0, 0, 3);
-        field.setRow(4, 4, 0, 0,  8, 0, 3,  0, 0, 1);
-        field.setRow(5, 7, 0, 0,  0, 2, 0,  0, 0, 6);
+        field.setRow(3, 8, 0, 0, 0, 6, 0, 0, 0, 3);
+        field.setRow(4, 4, 0, 0, 8, 0, 3, 0, 0, 1);
+        field.setRow(5, 7, 0, 0, 0, 2, 0, 0, 0, 6);
 
-        field.setRow(6, 0, 6, 0,  0, 0, 0,  2, 8, 0);
-        field.setRow(7, 0, 0, 0,  4, 1, 9,  0, 0, 5);
-        field.setRow(8, 0, 0, 0,  0, 8, 0,  0, 7, 9);
+        field.setRow(6, 0, 6, 0, 0, 0, 0, 2, 8, 0);
+        field.setRow(7, 0, 0, 0, 4, 1, 9, 0, 0, 5);
+        field.setRow(8, 0, 0, 0, 0, 8, 0, 0, 7, 9);
 
         System.out.println(field);
 
@@ -37,17 +41,17 @@ public class SudokuField extends Int2DArray {
     public static SudokuField nearlySolved() {
         final var field = new SudokuField();
 
-        field.setRow(0, 5, 3, 4,  6, 7, 8,  9, 1, 2);
-        field.setRow(1, 6, 7, 2,  1, 9, 5,  3, 4, 8);
-        field.setRow(2, 1, 9, 8,  3, 4, 2,  5, 6, 7);
+        field.setRow(0, 5, 3, 4, 6, 7, 8, 9, 1, 2);
+        field.setRow(1, 6, 7, 2, 1, 9, 5, 3, 4, 8);
+        field.setRow(2, 1, 9, 8, 3, 4, 2, 5, 6, 7);
 
-        field.setRow(3, 8, 5, 9,  7, 6, 1,  4, 2, 3);
-        field.setRow(4, 4, 2, 6,  8, 5, 3,  7, 9, 1);
-        field.setRow(5, 7, 1, 3,  9, 2, 4,  8, 5, 6);
+        field.setRow(3, 8, 5, 9, 7, 6, 1, 4, 2, 3);
+        field.setRow(4, 4, 2, 6, 8, 5, 3, 7, 9, 1);
+        field.setRow(5, 7, 1, 3, 9, 2, 4, 8, 5, 6);
 
-        field.setRow(6, 9, 6, 1,  5, 3, 7,  2, 8, 0);
-        field.setRow(7, 2, 8, 7,  4, 1, 9,  0, 0, 5);
-        field.setRow(8, 3, 4, 5,  2, 8, 6,  0, 7, 9);
+        field.setRow(6, 9, 6, 1, 5, 3, 7, 2, 8, 0);
+        field.setRow(7, 2, 8, 7, 4, 1, 9, 0, 0, 5);
+        field.setRow(8, 3, 4, 5, 2, 8, 6, 0, 7, 9);
 
         System.out.println(field);
 
@@ -77,9 +81,24 @@ public class SudokuField extends Int2DArray {
 
     public static void main(String[] args) {
         var field = SudokuField.initializeSimple();
-        var solution = new SudokuSolver().solve(field);
+        var solution = new InplaceSudokuSolver().solve(field);
         System.out.println("======== SOLUTION =========");
         System.out.println(solution);
 
+    }
+
+    public Optional<IntPair> firstEmptyField() {
+        int position = -1;
+        for (int i = 0; i < size(); ++i) {
+            if (this.buffer[i] == 0) {
+                position = i;
+                break;
+            }
+        }
+
+        int y = position / getWidth();
+        int x = position % getWidth();
+
+        return position == -1 ? Optional.empty() : Optional.of(new IntPair(y, x));
     }
 }
