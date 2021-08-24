@@ -4,7 +4,12 @@ import de.ctoffer.algorithms.Copyable;
 import de.ctoffer.datastructures.Int2DArray;
 import de.ctoffer.utils.IntPair;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SudokuField extends Int2DArray implements Copyable<SudokuField> {
     public SudokuField() {
@@ -100,5 +105,38 @@ public class SudokuField extends Int2DArray implements Copyable<SudokuField> {
         int x = position % getWidth();
 
         return position == -1 ? Optional.empty() : Optional.of(new IntPair(y, x));
+    }
+
+    public Set<Integer> getRow(IntPair coordinate) {
+        return IntStream.rangeClosed(0, 8)
+                .mapToObj(y -> new IntPair(y, coordinate.second))
+                .map(this::get)
+                .filter(i -> i != 0)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getColumn(IntPair coordinate) {
+        return IntStream.rangeClosed(0, 8)
+                .mapToObj(x -> new IntPair(coordinate.first, x))
+                .map(this::get)
+                .filter(i -> i != 0)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getSquare(IntPair coordinate) {
+        final Set<Integer> result = new HashSet<>();
+        int topLeftY = 3 * (coordinate.first / 3);
+        int topLeftX = 3 * (coordinate.second / 3);
+
+        for (int dy = 0; dy < 3; ++dy) {
+            for (int dx = 0; dx < 3; ++dx) {
+                var value = get(topLeftY + dy, topLeftX + dx);
+                if (value != 0) {
+                    result.add(value);
+                }
+            }
+        }
+
+        return result;
     }
 }

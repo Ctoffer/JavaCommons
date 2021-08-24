@@ -1,10 +1,10 @@
 package de.ctoffer.algorithms.sudoku;
 
 import de.ctoffer.algorithms.InplaceMutator;
-import de.ctoffer.utils.IntPair;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -15,7 +15,13 @@ public class SudokuMutator implements InplaceMutator<SudokuField, SudokuMutation
 
         if (maybeCoordinate.isPresent()) {
             var coordinate = maybeCoordinate.get();
+
+            Set<Integer> usedNumbers = object.getRow(coordinate);
+            usedNumbers.addAll(object.getColumn(coordinate));
+            usedNumbers.addAll(object.getSquare(coordinate));
+
             return IntStream.rangeClosed(1, 9)
+                    .filter(i -> !(usedNumbers.contains(i)))
                     .mapToObj(value -> new SudokuMutation(coordinate, value))
                     .collect(Collectors.toList());
         } else {
