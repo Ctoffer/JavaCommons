@@ -32,10 +32,14 @@
         <module>ctoffer-commons-damal-processor</module>
         <module>ctoffer-commons-algorithms</module>
         <module>ctoffer-commons-storage</module>
+        <module>ctoffer-commons-annotations</module>
+        <module>ctoffer-commons-processor</module>
     </modules>
 
     <properties>
         <java.version>12</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <lombok.version>1.18.24</lombok.version>
