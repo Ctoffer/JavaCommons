@@ -7,7 +7,7 @@
     <groupId>de.ctoffer</groupId>
     <artifactId>commons</artifactId>
     <packaging>pom</packaging>
-    <version>2022.5.3</version>
+    <version>2022.5.9</version>
 
     <distributionManagement>
         <snapshotRepository>
@@ -37,7 +37,7 @@
     </modules>
 
     <properties>
-        <java.version>12</java.version>
+        <java.version>16</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

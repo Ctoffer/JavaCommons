@@ -72,7 +72,7 @@ public abstract class SimpleAnnotationProcessor<T extends Annotation> extends Ab
 
     @Override
     public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.RELEASE_17;
+        return SourceVersion.RELEASE_16;
     }
 
     private static <T> Stream<T> startStream(T... args) {

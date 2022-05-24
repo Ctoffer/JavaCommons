@@ -13,15 +13,17 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
-import javax.tools.StandardLocation;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import static de.ctoffer.commons.annotations.processor.util.Util.getProjectStructure;
 import static java.util.Optional.ofNullable;
 
 public class TemplateFileProcessor extends SimpleAnnotationProcessor<TemplateFile> {
@@ -70,15 +72,6 @@ class TemplateFileHandler implements AnnotationHandler<TemplateFile> {
                     "Error " + e + " during accessing resource: " + requestedResource
             );
         }
-    }
-
-    private MavenProjectStructure getProjectStructure(final ProcessingContext processingContext) throws IOException {
-        final Path projectRoot = Paths.get(
-                processingContext.getFiler()
-                        .getResource(StandardLocation.CLASS_OUTPUT, "", "ignore.that").toUri()
-        ).getParent().getParent().getParent();
-
-        return new MavenProjectStructure(projectRoot);
     }
 
     private void updateMavenEnvironment(final EnvironmentLookup lookup, final MavenProjectStructure structure) throws IOException, XmlPullParserException {
