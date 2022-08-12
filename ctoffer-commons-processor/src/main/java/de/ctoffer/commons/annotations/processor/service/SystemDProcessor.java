@@ -164,8 +164,12 @@ class SystemDAnnotationHandler implements AnnotationHandler<SystemDService> {
         Files.write(startScript, Arrays.asList(
                 "#!/bin/bash",
                 "",
-                "pid=$( pgrep -f" + jarName + " )",
-                "pkill -9 $pid"
+                "pid=$( pgrep -f " + jarName + " )",
+                "",
+                "if [[ ! -z \"${pid}\" ]]; then",
+                "  for cid in $(pgrep -P ${pid}); do sudo kill -9 $cid; done",
+                "  sudo kill -9 $pid",
+                "fi"
         ));
     }
 }
