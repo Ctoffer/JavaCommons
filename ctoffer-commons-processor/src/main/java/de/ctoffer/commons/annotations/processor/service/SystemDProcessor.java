@@ -20,8 +20,11 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static de.ctoffer.commons.annotations.processor.util.Util.getProjectStructure;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.joining;
 
 
@@ -64,7 +67,14 @@ class SystemDAnnotationHandler implements AnnotationHandler<SystemDService> {
             var jarName = model.getArtifactId() + "-" + model.getVersion() + ".jar";
 
             writeServiceFile(serviceData, generatedResources, serviceName);
-            writeStartScript(generatedResources, serviceName, jarName);
+            writeStartScript(
+                    generatedResources,
+                    serviceName,
+                    jarName,
+                    serviceData.jvmArgs(),
+                    serviceData.systemProperties(),
+                    serviceData.programArgs()
+            );
             writeStopScript(generatedResources, jarName);
         } catch (Exception e) {
             processingContext.getMessager().error(
@@ -118,20 +128,31 @@ class SystemDAnnotationHandler implements AnnotationHandler<SystemDService> {
     }
 
     private static String join(int[] array) {
-        return Arrays.stream(array).mapToObj(Integer::toString).collect(joining(" "));
+        return stream(array).mapToObj(Integer::toString).collect(joining(" "));
     }
 
     private static void writeStartScript(
             final Path generatedResources,
             final String serviceName,
-            final String jarName
+            final String jarName,
+            final String[] jvmArgs,
+            final String[] systemProperties,
+            final String[] programArgs
     ) throws IOException {
         var startScript = generatedResources.resolve("start.sh");
         Files.write(startScript, Arrays.asList(
                 "#!/bin/bash",
                 "",
                 "cd /home/pi/Software/" + serviceName,
-                "java -Xmx100M -jar " + jarName
+                String.join(
+                        " ",
+                        "java",
+                        String.join(" ", jvmArgs),
+                        stream(systemProperties).map(s -> "-D" + s).collect(joining(" ")),
+                        "-jar",
+                        jarName,
+                        String.join(" ", programArgs)
+                )
         ));
     }
 

@@ -4,8 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Retention(RetentionPolicy.SOURCE)
 @Target(ElementType.TYPE)
@@ -16,4 +14,7 @@ public @interface SystemDService {
     int[] defaultStop();
     String shortDescription();
     String description();
+    String[] jvmArgs() default {"-Xmx100M"};
+    String[] systemProperties() default {};
+    String[] programArgs() default {};
 }
