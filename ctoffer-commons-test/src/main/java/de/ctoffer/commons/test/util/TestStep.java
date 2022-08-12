@@ -40,6 +40,7 @@ public class TestStep {
     public static <T> Comparison<T> HasSameReferenceAs(T expected) {
         return actual -> assertSame(expected, actual);
     }
+
     public static <T> Comparison<T> HasDifferentReferenceAs(T unexpected) {
         return actual -> assertNotSame(unexpected, actual);
     }

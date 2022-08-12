@@ -19,12 +19,12 @@ public enum LoopUtils {
     }
 
     public static IntStream range(int start, int stop, int step) {
-        if(step == 0) {
+        if (step == 0) {
             throw new IllegalArgumentException("'step' must not be zero!");
         }
 
         IntStream result;
-        if(isEmptyRange(start, stop, step)) {
+        if (isEmptyRange(start, stop, step)) {
             result = IntStream.range(0, 0);
         } else {
             result = IntStream.range(0, sizeOfRange(start, stop, step))
@@ -46,7 +46,7 @@ public enum LoopUtils {
 
     public static <T> void loopUntilNull(final Supplier<T> source, final Consumer<T> action) {
         T object = source.get();
-        while(object != null){
+        while (object != null) {
             action.accept(object);
             object = source.get();
         }
@@ -55,7 +55,7 @@ public enum LoopUtils {
     public static <T, E extends Exception, F extends Exception>
     void tryLoopUntilNull(final ThrowingSupplier<T, E> source, final ThrowingConsumer<T, F> action) throws E, F {
         T object = source.get();
-        while(object != null){
+        while (object != null) {
             action.accept(object);
             object = source.get();
         }

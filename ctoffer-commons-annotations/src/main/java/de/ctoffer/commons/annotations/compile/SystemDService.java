@@ -10,11 +10,18 @@ import java.lang.annotation.Target;
 public @interface SystemDService {
 
     String serviceName();
+
     int[] defaultStart();
+
     int[] defaultStop();
+
     String shortDescription();
+
     String description();
+
     String[] jvmArgs() default {"-Xmx100M"};
+
     String[] systemProperties() default {};
+
     String[] programArgs() default {};
 }

@@ -9,7 +9,7 @@ public enum ArrayUtils {
     ;
 
     public static void checkIfArray(final Object maybeArray) {
-        if(isNotArray(maybeArray)) {
+        if (isNotArray(maybeArray)) {
             throw new IllegalArgumentException("Argument must be array.");
         }
     }
@@ -65,7 +65,7 @@ public enum ArrayUtils {
 
             @Override
             public E next() {
-                if(position >= array.length) {
+                if (position >= array.length) {
                     throw new NoSuchElementException("Array of length " + array.length + " has no entry at position " + position);
                 }
                 return array[position++];

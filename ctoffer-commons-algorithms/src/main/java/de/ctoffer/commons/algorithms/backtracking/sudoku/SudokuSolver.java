@@ -82,7 +82,7 @@ public class SudokuSolver extends Backtracking<SudokuField> {
         int topLeftY = 3 * (y / 3);
         int topLeftX = 3 * (x / 3);
 
-        for(int dy = 0; dy < 3; ++dy) {
+        for (int dy = 0; dy < 3; ++dy) {
             for (int dx = 0; dx < 3; ++dx) {
                 int value = field.get(topLeftY + dy, topLeftX + dx);
                 if (value != 0) {

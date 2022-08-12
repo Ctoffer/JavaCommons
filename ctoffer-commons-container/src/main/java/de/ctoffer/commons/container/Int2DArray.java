@@ -74,7 +74,7 @@ public class Int2DArray {
         }
 
         for (int i = 0; i < this.getWidth(); ++i) {
-            this.buffer[resolveIndex(y, i )] = row[i];
+            this.buffer[resolveIndex(y, i)] = row[i];
         }
     }
 

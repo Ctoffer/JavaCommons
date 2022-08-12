@@ -4,7 +4,7 @@ package de.ctoffer.commons.algorithms.memento;
 import java.util.Objects;
 import java.util.Optional;
 
-public class UnmodifiableModification <T> implements ModificationBase <T> {
+public class UnmodifiableModification<T> implements ModificationBase<T> {
 
     private Modification<T> instance;
 

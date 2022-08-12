@@ -19,7 +19,7 @@ public class ModificationStack {
     }
 
     public ModificationStack(int limit) {
-        if(limit <= 0) {
+        if (limit <= 0) {
             throw new IllegalArgumentException("Limit must be greater than 0");
         }
 
@@ -29,14 +29,14 @@ public class ModificationStack {
     }
 
     public void remember(final Modification<?> modification) {
-        if(modification == null) {
+        if (modification == null) {
             throw new IllegalArgumentException("Given modification must be non-null.");
-        } else if(modification.wasAlreadyUndone()) {
+        } else if (modification.wasAlreadyUndone()) {
             throw new IllegalArgumentException("Can only save modifications, which are not already undone.");
         }
 
         redoableModifications.clear();
-        if(reachedLimit()) {
+        if (reachedLimit()) {
             undoableModifications.removeFirst();
         }
         undoableModifications.push(modification);
@@ -61,7 +61,7 @@ public class ModificationStack {
     }
 
     public void redoLastModification() {
-        if(hasNoRedoModifications()) {
+        if (hasNoRedoModifications()) {
             throw new IllegalStateException("There is nothing to redo.");
         }
 

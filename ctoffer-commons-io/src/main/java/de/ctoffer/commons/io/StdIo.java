@@ -1,10 +1,10 @@
 package de.ctoffer.commons.io;
 
-import lombok.*;
-import lombok.experimental.Delegate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -56,7 +56,7 @@ public class StdIo {
         }
 
         try (final Scanner scanner = new Scanner(new NeverCloseInputStream(System.in))) {
-            var result =  scanner.nextLine();
+            var result = scanner.nextLine();
             if (result.isEmpty()) {
                 return defaultValue;
             } else {

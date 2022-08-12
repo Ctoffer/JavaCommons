@@ -3,14 +3,14 @@ package de.ctoffer.damal.processor;
 import de.ctoffer.commons.io.StdIo;
 import de.ctoffer.damal.antlr4.DaMaLLexer;
 import de.ctoffer.damal.antlr4.DaMaLParser;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.*;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.List;
 
 public class ParserDemo {
     public static void main(String[] args) throws IOException {

@@ -1,6 +1,6 @@
 package de.ctoffer.commons.test.util;
 
-public class TestSubject <T> {
+public class TestSubject<T> {
     private T subject;
 
     public void setSubject(final T subject) {

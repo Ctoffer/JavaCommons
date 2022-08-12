@@ -5,10 +5,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- *
  * @param <T>
  */
-public class Modification <T> implements  ModificationBase<T> {
+public class Modification<T> implements ModificationBase<T> {
     private Supplier<T> getState;
     private Consumer<T> setState;
     private T savedState;
@@ -49,7 +48,7 @@ public class Modification <T> implements  ModificationBase<T> {
 
     @Override
     public void undo() {
-        if(wasAlreadyUndone()) {
+        if (wasAlreadyUndone()) {
             throw new IllegalStateException("This modification was already undone and cannot be undone twice in a row.");
         }
 
@@ -61,7 +60,7 @@ public class Modification <T> implements  ModificationBase<T> {
 
     @Override
     public void redo() {
-        if(wasApplied()) {
+        if (wasApplied()) {
             throw new IllegalStateException("This modification was already redone and cannot be redone twice in a row.");
         }
 
@@ -79,7 +78,7 @@ public class Modification <T> implements  ModificationBase<T> {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
 
-        if(getName().isPresent()) {
+        if (getName().isPresent()) {
             builder.append(name);
         } else {
             builder.append("Unnamed");

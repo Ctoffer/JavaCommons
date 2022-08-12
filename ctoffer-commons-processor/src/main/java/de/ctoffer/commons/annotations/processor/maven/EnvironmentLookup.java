@@ -47,7 +47,7 @@ public class EnvironmentLookup extends HashMap<String, String> {
 
                     EnvironmentLookup.this.put(getName() + ":" + entry.getFirst(), value);
 
-                    for(final String alternative: alternatives) {
+                    for (final String alternative : alternatives) {
                         EnvironmentLookup.this.put(alternative + ":" + entry.getFirst(), value);
                     }
                 });

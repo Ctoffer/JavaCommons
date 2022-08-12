@@ -25,9 +25,9 @@ class ModificationStackTest {
     }
 
     private <T> Modification<T> modification(final String name, final ModificationDataMock<T> mock) {
-       Modification<T> mod = modification(mock);
-       mod.setName(name);
-       return mod;
+        Modification<T> mod = modification(mock);
+        mod.setName(name);
+        return mod;
     }
 
     private <T> Modification<T> modification(final ModificationDataMock<T> mock) {

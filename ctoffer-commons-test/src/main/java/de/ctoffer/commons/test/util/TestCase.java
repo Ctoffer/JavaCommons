@@ -40,7 +40,7 @@ public class TestCase {
 
         @SafeVarargs
         public final <T> Precondition assumeThat(final T object, Comparison<T>... comparisons) {
-            for(Comparison<T> comparison : comparisons) {
+            for (Comparison<T> comparison : comparisons) {
                 comparison.withObject(object);
             }
             return this;
@@ -124,7 +124,7 @@ public class TestCase {
 
         @SafeVarargs
         public final <T> PostCondition resultingIn(final T object, Comparison<T>... comparisons) {
-            for(Comparison<T> comparison : comparisons) {
+            for (Comparison<T> comparison : comparisons) {
                 comparison.withObject(object);
             }
             return this;

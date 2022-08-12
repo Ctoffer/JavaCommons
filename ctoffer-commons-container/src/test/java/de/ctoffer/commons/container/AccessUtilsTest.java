@@ -1,7 +1,5 @@
 package de.ctoffer.commons.container;
 
-import de.ctoffer.commons.container.AccessUtils;
-import de.ctoffer.commons.container.ArrayUtils;
 import de.ctoffer.commons.test.util.Expect;
 import de.ctoffer.commons.test.util.TestCase;
 import de.ctoffer.commons.test.util.TestStep;
@@ -11,8 +9,6 @@ import org.junit.jupiter.api.*;
 import java.util.*;
 import java.util.stream.IntStream;
 
-import static de.ctoffer.commons.test.util.Expect.Expecting;
-import static de.ctoffer.commons.test.util.TestStep.*;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;

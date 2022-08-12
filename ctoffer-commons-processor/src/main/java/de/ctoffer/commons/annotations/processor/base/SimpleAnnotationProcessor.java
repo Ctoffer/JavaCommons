@@ -36,7 +36,7 @@ public abstract class SimpleAnnotationProcessor<T extends Annotation> extends Ab
         this.typeUtilities = processingEnv.getTypeUtils();
         this.filer = processingEnv.getFiler();
         this.elementUtils = processingEnv.getElementUtils();
-        processingEnv.getOptions().forEach((k,v) -> System.out.println(k + ": " + v));
+        processingEnv.getOptions().forEach((k, v) -> System.out.println(k + ": " + v));
     }
 
     @Override
