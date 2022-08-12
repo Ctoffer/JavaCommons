@@ -50,6 +50,21 @@ public class StdIo {
         }
     }
 
+    public static String input(final String message, final String defaultValue) {
+        if (Objects.nonNull(message) && message.length() > 0) {
+            print(standardBuilder.get().end("").build(), message);
+        }
+
+        try (final Scanner scanner = new Scanner(new NeverCloseInputStream(System.in))) {
+            var result =  scanner.nextLine();
+            if (result.isEmpty()) {
+                return defaultValue;
+            } else {
+                return result;
+            }
+        }
+    }
+
     public static String input(final String message) {
         if (Objects.nonNull(message) && message.length() > 0) {
             print(standardBuilder.get().end("").build(), message);

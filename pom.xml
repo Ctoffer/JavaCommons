@@ -7,7 +7,7 @@
     <groupId>de.ctoffer</groupId>
     <artifactId>commons</artifactId>
     <packaging>pom</packaging>
-    <version>2022.5.9</version>
+    <version>2022.8.11.0</version>
 
     <distributionManagement>
         <snapshotRepository>
@@ -34,6 +34,7 @@
         <module>ctoffer-commons-storage</module>
         <module>ctoffer-commons-annotations</module>
         <module>ctoffer-commons-processor</module>
+        <module>ctoffer-commons-service</module>
     </modules>
 
     <properties>
@@ -47,7 +48,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

@@ -82,19 +82,28 @@ public enum AccessUtils {
                 , index);
     }
 
+    public static byte get(final byte[] array, final int index) {
+        return abstractGet(
+                array.getClass().getSimpleName()
+                , i -> array[i]
+                , () -> array.length
+                , index);
+    }
+
+
     // ================================================================================================================
     // Size
     // ================================================================================================================
 
 
     public static int size(final Object object) {
-        if(ArrayUtils.isArray(object)) {
+        if (ArrayUtils.isArray(object)) {
             return Array.getLength(object);
-        } else if(object instanceof Collection) {
+        } else if (object instanceof Collection) {
             return size((Collection<?>) object);
-        } else if(object instanceof Map) {
+        } else if (object instanceof Map) {
             return size((Map<?, ?>) object);
-        } else if(object instanceof CharSequence) {
+        } else if (object instanceof CharSequence) {
             return size((CharSequence) object);
         } else {
             throw new IllegalArgumentException("Object of class " + object.getClass() + " has no size.");
@@ -498,7 +507,7 @@ public enum AccessUtils {
             result = copy(array, start, stop);
         } else {
             int resultSize = LoopUtils.sizeOfRange(start, stop, step);
-           result = loopBasedArraySlice(array, start, resultSize, step);
+            result = loopBasedArraySlice(array, start, resultSize, step);
         }
 
         return (T) result;
@@ -511,9 +520,9 @@ public enum AccessUtils {
         final Object result = ArrayUtils.createArray(componentType, resultSize);
         int resultIndex = 0;
 
-        for(int i = 0; i < resultSize; ++i) {
+        for (int i = 0; i < resultSize; ++i) {
             int rangeIndex = start + i * step;
-            if(rangeIndex < 0 || size(array) <= rangeIndex) {
+            if (rangeIndex < 0 || size(array) <= rangeIndex) {
                 continue;
             }
 
@@ -526,7 +535,7 @@ public enum AccessUtils {
 
     static int limitValue(int value, int threshold) {
         int result = value;
-        if(result > threshold) {
+        if (result > threshold) {
             result = threshold;
         }
         return result;
