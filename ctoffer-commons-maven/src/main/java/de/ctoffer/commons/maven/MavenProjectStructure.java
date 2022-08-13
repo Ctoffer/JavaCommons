@@ -1,4 +1,4 @@
-package de.ctoffer.commons.annotations.processor.maven;
+package de.ctoffer.commons.maven;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;

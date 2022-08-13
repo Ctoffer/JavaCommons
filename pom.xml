@@ -35,6 +35,8 @@
         <module>ctoffer-commons-annotations</module>
         <module>ctoffer-commons-processor</module>
         <module>ctoffer-commons-service</module>
+        <module>ctoffer-commons-installer</module>
+        <module>ctoffer-commons-maven</module>
     </modules>
 
     <properties>

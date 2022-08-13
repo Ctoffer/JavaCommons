@@ -1,7 +1,7 @@
 package de.ctoffer.commons.annotations.processor.util;
 
 import de.ctoffer.commons.annotations.processor.base.ProcessingContext;
-import de.ctoffer.commons.annotations.processor.maven.MavenProjectStructure;
+import de.ctoffer.commons.maven.MavenProjectStructure;
 
 import javax.tools.StandardLocation;
 import java.io.IOException;
