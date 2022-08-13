@@ -93,12 +93,12 @@ public class RpiServiceInstaller {
 
     private static RpiInstallerData createInstallerData(final Input input) {
         var directoryStruct = new DirectoryStruct(input);
-        final var jarData = base64(directoryStruct.artifactPath());
+        final var jarData = base64Binary(directoryStruct.artifactPath());
         final var initData = base64(gzip(directoryStruct.runnerScriptPath()));
         final var startData = base64(gzip(directoryStruct.startScriptPath()));
         final var stopData = base64(gzip(directoryStruct.stopScriptPath()));
 
-       return RpiInstallerData.builder()
+        return RpiInstallerData.builder()
                 .artifactId(input.artifactId())
                 .version(input.version())
                 .jarData(jarData)
@@ -116,8 +116,20 @@ public class RpiServiceInstaller {
         }
     }
 
+    private static String base64Binary(final Path file) {
+        try {
+            return base64(Files.readAllBytes(file));
+        } catch (IOException ioe) {
+            throw new UncheckedIOException(ioe);
+        }
+    }
+
+    private static String base64(final byte[] zippedData) {
+        return Base64.getEncoder().encodeToString(zippedData);
+    }
+
     private static String base64(final String zippedData) {
-        return Base64.getEncoder().encodeToString(zippedData.getBytes());
+        return base64(zippedData.getBytes());
     }
 
     private static String gzip(final Path file) {
