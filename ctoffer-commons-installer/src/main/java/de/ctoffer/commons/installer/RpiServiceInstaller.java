@@ -1,25 +1,20 @@
 package de.ctoffer.commons.installer;
 
-import de.ctoffer.commons.container.AccessUtils;
 import de.ctoffer.commons.io.StdIo;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
-import java.util.zip.GZIPOutputStream;
 
 public class RpiServiceInstaller {
 
@@ -98,10 +93,10 @@ public class RpiServiceInstaller {
 
     private static RpiInstallerData createInstallerData(final Input input) {
         var directoryStruct = new DirectoryStruct(input);
-        final var jarData = base64Binary(directoryStruct.artifactPath());
-        final var initData = base64Text(directoryStruct.runnerScriptPath());
-        final var startData = base64Text(directoryStruct.startScriptPath());
-        final var stopData = base64Text(directoryStruct.stopScriptPath());
+        final var jarData = base64(directoryStruct.artifactPath());
+        final var initData = base64(directoryStruct.runnerScriptPath());
+        final var startData = base64(directoryStruct.startScriptPath());
+        final var stopData = base64(directoryStruct.stopScriptPath());
 
         return RpiInstallerData.builder()
                 .artifactId(input.artifactId())
@@ -114,7 +109,7 @@ public class RpiServiceInstaller {
     }
 
 
-    static String base64Binary(final Path file) {
+    static String base64(final Path file) {
         try {
             return base64(Files.readAllBytes(file));
         } catch (IOException ioe) {
@@ -122,27 +117,10 @@ public class RpiServiceInstaller {
         }
     }
 
-    static String base64Text(final Path file) {
-        return base64(gzip(file));
-    }
-
     static String base64(final byte[] zippedData) {
         return Base64.getMimeEncoder(76, new byte[]{'\n'}).encodeToString(zippedData);
     }
 
-    static byte[] gzip(final Path file) {
-        try (
-                final var bos = new ByteArrayOutputStream();
-                final var out = new GZIPOutputStream(bos, true);
-                final var in = new FileInputStream(file.toFile())
-        ) {
-            in.transferTo(out);
-            out.flush();
-            return bos.toByteArray();
-        } catch (IOException ioe) {
-            throw new UncheckedIOException(ioe);
-        }
-    }
 
     private static List<String> createInstallerScript(final RpiInstallerData data) {
         return Arrays.asList(

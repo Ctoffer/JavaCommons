@@ -10,12 +10,14 @@ class RpiServiceInstallerTest {
 
     @Test
     void testBase64Text() {
-        final String expected = "H4sIAAAAAAAAA1WMvw6CMByE9yZ9hwM7wNAinTTEd3AnDPxp5YekkIImanx3S3RxueHu+24XZQ25\n" +
-                "rKmXnjPOZupOIsF88WaGtGjXyVrj5WOVi/F3ao3Ue63VQeVa5WqoPdLNI4uyRAT5RCxe4eUdo6oK\n" +
-                "rL1xnAF28mipAzmI5Pd+xpdMC3QTlluIK40j5BEisFvrzCb/T0HhzBJnH6CNRTa7AAAA\n";
+        final String expected =
+                "IyEvYmluL2Jhc2gNCg0KcGlkPSQoIHBncmVwIC1mIGN0b2ZmZXIteXQtc2VydmljZS0yMDIyLjgu\n" +
+                "MTIuMS5qYXIgKQ0KDQppZiBbWyAhIC16ICIke3BpZH0iIF1dOyB0aGVuDQogIGZvciBjaWQgaW4g\n" +
+                "JChwZ3JlcCAtUCAke3BpZH0pOyBkbyBzdWRvIGtpbGwgLTkgJGNpZDsgZG9uZQ0KICBzdWRvIGtp\n" +
+                "bGwgLTkgJHBpZA0KZmkNCg==";
 
         var path = Paths.get("src", "test", "resources", "stop.sh");
-        var actual = RpiServiceInstaller.base64Text(path);
+        var actual = RpiServiceInstaller.base64(path);
 
         assertEquals(expected, actual);
     }
