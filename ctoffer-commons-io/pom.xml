@@ -5,15 +5,10 @@
     <parent>
         <artifactId>commons</artifactId>
         <groupId>de.ctoffer</groupId>
-        <version>2022.8.13.10</version>
+        <version>2022.8.13.11</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ctoffer-commons-io</artifactId>
-
-    <properties>
-        <maven.compiler.source>13</maven.compiler.source>
-        <maven.compiler.target>13</maven.compiler.target>
-    </properties>
 
 </project>
