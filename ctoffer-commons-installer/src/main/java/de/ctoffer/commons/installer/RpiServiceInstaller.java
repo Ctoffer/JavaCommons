@@ -1,5 +1,6 @@
 package de.ctoffer.commons.installer;
 
+import de.ctoffer.commons.container.AccessUtils;
 import de.ctoffer.commons.io.StdIo;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -82,10 +84,13 @@ public class RpiServiceInstaller {
                 .build();
 
         var installerData = createInstallerData(input);
-        var lines = createInstallerScript(installerData);
+        var lines = String.join("\n", createInstallerScript(installerData));
 
         try {
-            Files.write(input.buildDirectory().resolve(input.artifactId() + "-" + input.version + ".sh"), lines);
+            Files.write(
+                    input.buildDirectory().resolve(input.artifactId() + "-" + input.version + ".sh"),
+                    lines.getBytes(StandardCharsets.UTF_8)
+            );
         } catch (final IOException ioe) {
             throw new UncheckedIOException(ioe);
         }
@@ -94,9 +99,9 @@ public class RpiServiceInstaller {
     private static RpiInstallerData createInstallerData(final Input input) {
         var directoryStruct = new DirectoryStruct(input);
         final var jarData = base64Binary(directoryStruct.artifactPath());
-        final var initData = base64(gzip(directoryStruct.runnerScriptPath()));
-        final var startData = base64(gzip(directoryStruct.startScriptPath()));
-        final var stopData = base64(gzip(directoryStruct.stopScriptPath()));
+        final var initData = base64Text(directoryStruct.runnerScriptPath());
+        final var startData = base64Text(directoryStruct.startScriptPath());
+        final var stopData = base64Text(directoryStruct.stopScriptPath());
 
         return RpiInstallerData.builder()
                 .artifactId(input.artifactId())
@@ -108,15 +113,8 @@ public class RpiServiceInstaller {
                 .build();
     }
 
-    private static String base64(final Path file) {
-        try {
-            return base64(Files.readString(file, StandardCharsets.UTF_8));
-        } catch (IOException ioe) {
-            throw new UncheckedIOException(ioe);
-        }
-    }
 
-    private static String base64Binary(final Path file) {
+    static String base64Binary(final Path file) {
         try {
             return base64(Files.readAllBytes(file));
         } catch (IOException ioe) {
@@ -124,22 +122,23 @@ public class RpiServiceInstaller {
         }
     }
 
-    private static String base64(final byte[] zippedData) {
-        return Base64.getEncoder().encodeToString(zippedData);
+    static String base64Text(final Path file) {
+        return base64(gzip(file));
     }
 
-    private static String base64(final String zippedData) {
-        return base64(zippedData.getBytes());
+    static String base64(final byte[] zippedData) {
+        return Base64.getMimeEncoder(76, new byte[]{'\n'}).encodeToString(zippedData);
     }
 
-    private static String gzip(final Path file) {
+    static byte[] gzip(final Path file) {
         try (
                 final var bos = new ByteArrayOutputStream();
-                final var out = new GZIPOutputStream(bos);
+                final var out = new GZIPOutputStream(bos, true);
                 final var in = new FileInputStream(file.toFile())
         ) {
             in.transferTo(out);
-            return bos.toString(StandardCharsets.UTF_8);
+            out.flush();
+            return bos.toByteArray();
         } catch (IOException ioe) {
             throw new UncheckedIOException(ioe);
         }
