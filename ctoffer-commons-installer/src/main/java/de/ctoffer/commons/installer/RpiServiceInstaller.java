@@ -2,7 +2,7 @@ package de.ctoffer.commons.installer;
 
 public class RpiServiceInstaller {
     public static void main(String[] args) {
-        System.out.println();
+        System.out.println("RpiInstaller running ...");
 
         // Get pom.xml and MavenProjectStructure object
         // Use final var reader = new MavenXpp3Reader(); to read POM to retrieve artifact id
