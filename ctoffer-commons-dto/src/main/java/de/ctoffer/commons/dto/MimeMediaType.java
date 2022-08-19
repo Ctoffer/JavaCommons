@@ -1,4 +1,4 @@
-package de.ctoffer.commons.wrapper.mail;
+package de.ctoffer.commons.dto;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;

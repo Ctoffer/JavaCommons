@@ -1,5 +1,7 @@
 package de.ctoffer.commons.wrapper.mail;
 
+import de.ctoffer.commons.dto.MimeMediaType;
+import de.ctoffer.commons.dto.service.MailAttachment;
 import de.ctoffer.commons.exception.unchecked.UncheckedMessagingException;
 import de.ctoffer.commons.exception.unchecked.UncheckedUnsupportedEncodingException;
 import jakarta.activation.*;
@@ -13,6 +15,7 @@ import jakarta.mail.util.ByteArrayDataSource;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
@@ -121,6 +124,11 @@ public class MailBuilder {
 
     }
 
+    public MailBuilder transferPathAttachments(final List<Path> attachments) {
+        attachments.forEach(this::attachment);
+        return this;
+    }
+
     public MailBuilder attachment(final Path path) {
         try {
             final var bodyPart = new MimeBodyPart();
@@ -140,6 +148,24 @@ public class MailBuilder {
             final DataSource source = new ByteArrayDataSource(data, mediaType.mime());
             bodyPart.setDataHandler(new DataHandler(source));
             bodyPart.setFileName(name);
+            addBodyPart(bodyPart);
+            return this;
+        } catch (final MessagingException e) {
+            throw new UncheckedMessagingException(e);
+        }
+    }
+
+    public MailBuilder transferAttachments(final List<MailAttachment> attachments) {
+        attachments.forEach(this::attachment);
+        return this;
+    }
+
+    public MailBuilder attachment(final MailAttachment attachment) {
+        try {
+            final var bodyPart = new MimeBodyPart();
+            final DataSource source = new ByteArrayDataSource(attachment.getDecodedData(), attachment.getMime());
+            bodyPart.setDataHandler(new DataHandler(source));
+            bodyPart.setFileName(attachment.getFileName());
             addBodyPart(bodyPart);
             return this;
         } catch (final MessagingException e) {
