@@ -9,6 +9,18 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ctoffer-commons-storage</artifactId>
+    <artifactId>ctoffer-commons-wrapper</artifactId>
+
+    <properties>
+        <jakarta.mail.version>2.0.1</jakarta.mail.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>${jakarta.mail.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
