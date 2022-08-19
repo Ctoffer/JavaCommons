@@ -19,6 +19,14 @@ public class MailSessionBuilder {
     private final Properties sessionProperties = new Properties();
     private Supplier<PasswordAuthentication> getAuthenticator;
 
+    public static MailSessionBuilder gmail() {
+        return new MailSessionBuilder()
+                .host("smtp.gmail.com")
+                .port(587)
+                .auth(true)
+                .starttls(true);
+    }
+
     public MailSessionBuilder host(final String host) {
         sessionProperties.put(MAIL_SMTP_HOST, host);
         return this;

@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 
 public class MailBuilder {
 
@@ -29,6 +28,7 @@ public class MailBuilder {
     private final Map<Message.RecipientType, InternetAddress[]> recipients;
     private String subject;
     private final Multipart multipart;
+    private boolean emptyMultipart = true;
 
     private MailBuilder() {
         this.recipients = new HashMap<>();
@@ -103,11 +103,23 @@ public class MailBuilder {
         final var messageBodyPart = new MimeBodyPart();
         try {
             messageBodyPart.setText(text);
+            addBodyPart(messageBodyPart);
         } catch (final MessagingException exception) {
             throw new UncheckedMessagingException(exception);
         }
 
         return this;
+    }
+
+    private void addBodyPart(final MimeBodyPart bodyPart) {
+        try {
+            this.emptyMultipart = false;
+            this.multipart.addBodyPart(bodyPart);
+        } catch (final MessagingException exception) {
+            this.emptyMultipart = true;
+            throw new UncheckedMessagingException(exception);
+        }
+
     }
 
     public MailBuilder attachment(final Path path) {
@@ -116,7 +128,7 @@ public class MailBuilder {
             final DataSource source = new FileDataSource(path.toFile());
             bodyPart.setDataHandler(new DataHandler(source));
             bodyPart.setFileName(path.getFileName().toString());
-            multipart.addBodyPart(bodyPart);
+            addBodyPart(bodyPart);
             return this;
         } catch (final MessagingException e) {
             throw new UncheckedMessagingException(e);
@@ -133,6 +145,13 @@ public class MailBuilder {
             message.setFrom(from);
             recipients.entrySet().forEach(e -> setRecipients(message, e));
             message.setSubject(subject);
+
+            if (emptyMultipart) {
+                var bodyPart = new MimeBodyPart();
+                bodyPart.setText("");
+                addBodyPart(bodyPart);
+            }
+
             message.setContent(multipart);
             Transport.send(message);
         } catch (final MessagingException e) {
