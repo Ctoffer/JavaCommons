@@ -2,14 +2,13 @@ package de.ctoffer.commons.wrapper.mail;
 
 import de.ctoffer.commons.exception.unchecked.UncheckedMessagingException;
 import de.ctoffer.commons.exception.unchecked.UncheckedUnsupportedEncodingException;
-import jakarta.activation.DataHandler;
-import jakarta.activation.DataSource;
-import jakarta.activation.FileDataSource;
+import jakarta.activation.*;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
+import jakarta.mail.util.ByteArrayDataSource;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
@@ -128,6 +127,19 @@ public class MailBuilder {
             final DataSource source = new FileDataSource(path.toFile());
             bodyPart.setDataHandler(new DataHandler(source));
             bodyPart.setFileName(path.getFileName().toString());
+            addBodyPart(bodyPart);
+            return this;
+        } catch (final MessagingException e) {
+            throw new UncheckedMessagingException(e);
+        }
+    }
+
+    public MailBuilder attachment(final String name, final MimeMediaType mediaType, final byte[] data) {
+        try {
+            final var bodyPart = new MimeBodyPart();
+            final DataSource source = new ByteArrayDataSource(data, mediaType.mime());
+            bodyPart.setDataHandler(new DataHandler(source));
+            bodyPart.setFileName(name);
             addBodyPart(bodyPart);
             return this;
         } catch (final MessagingException e) {
