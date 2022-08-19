@@ -7,7 +7,7 @@
     <groupId>de.ctoffer</groupId>
     <artifactId>commons</artifactId>
     <packaging>pom</packaging>
-    <version>2022.8.20.1</version>
+    <version>2022.8.20.3</version>
 
     <distributionManagement>
         <snapshotRepository>
@@ -39,6 +39,7 @@
         <module>ctoffer-commons-maven</module>
         <module>ctoffer-commons-wrapper</module>
         <module>ctoffer-commons-exception</module>
+        <module>ctoffer-commons-dto</module>
     </modules>
 
     <properties>
