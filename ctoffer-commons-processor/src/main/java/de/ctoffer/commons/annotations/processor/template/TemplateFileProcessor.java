@@ -92,9 +92,9 @@ class TemplateFileHandler implements AnnotationHandler<TemplateFile> {
         }
 
         lookup.simpleNamespace("mvn", "maven")
-                .insert("project.groupId", ofNullable(model.getGroupId()).orElse(model.getParent().getGroupId()))
-                .insert("project.artifactId", ofNullable(model.getArtifactId()).orElse(model.getParent().getArtifactId()))
-                .insert("project.version", ofNullable(model.getVersion()).orElse(model.getParent().getVersion()))
+                .insert("project.groupId", ofNullable(model.getGroupId()).orElseGet(() -> model.getParent().getGroupId()))
+                .insert("project.artifactId", ofNullable(model.getArtifactId()).orElseGet(() -> model.getParent().getArtifactId()))
+                .insert("project.version", ofNullable(model.getVersion()).orElseGet(() -> model.getParent().getVersion()))
                 .insert(extractPropertiesOf(parent))
                 .insert(extractPropertiesOf(model));
     }
