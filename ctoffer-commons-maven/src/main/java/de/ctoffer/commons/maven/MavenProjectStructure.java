@@ -31,12 +31,12 @@ public class MavenProjectStructure {
         this.source = this.projectRoot.resolve("src");
 
         this.main = this.source.resolve("main");
-        this.mainJava = this.source.resolve("java");
-        this.mainResources = this.source.resolve("resources");
+        this.mainJava = this.main.resolve("java");
+        this.mainResources = this.main.resolve("resources");
 
         this.test = this.source.resolve("test");
-        this.testJava = this.source.resolve("java");
-        this.testResources = this.source.resolve("resources");
+        this.testJava = this.test.resolve("java");
+        this.testResources = this.test.resolve("resources");
 
         this.target = this.projectRoot.resolve("target");
         this.generatedResources = this.target.resolve("generated-resources");

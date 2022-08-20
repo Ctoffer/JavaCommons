@@ -88,7 +88,12 @@ class TemplateFileHandler implements AnnotationHandler<TemplateFile> {
         final var model = reader.read(new FileReader(structure.pom().toFile()));
         Model parent = null;
         if (Objects.nonNull(model.getParent())) {
-            parent = reader.read(new FileReader(structure.projectRoot().getParent().resolve("pom.xml").toFile()));
+            var parentPomPath = structure.projectRoot().getParent().resolve("pom.xml").toFile();
+
+            if (parentPomPath.exists()) {
+                // Only works if in same directory tree
+                parent = reader.read(new FileReader(parentPomPath));
+            }
         }
 
         lookup.simpleNamespace("mvn", "maven")
