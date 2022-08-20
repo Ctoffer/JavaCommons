@@ -47,7 +47,7 @@ public class TemplateFileProcessor extends SimpleAnnotationProcessor<TemplateFil
 
     @Override
     protected Set<ElementKind> getSupportedElementKinds() {
-        return Set.of(ElementKind.CLASS);
+        return Set.of(ElementKind.CLASS, ElementKind.RECORD);
     }
 }
 
