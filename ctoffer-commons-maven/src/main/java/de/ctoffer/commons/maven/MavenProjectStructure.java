@@ -21,6 +21,7 @@ public class MavenProjectStructure {
     private final Path testResources;
 
     private final Path target;
+    private final Path classes;
     private final Path generatedResources;
 
     private final Path pom;
@@ -39,6 +40,7 @@ public class MavenProjectStructure {
         this.testResources = this.test.resolve("resources");
 
         this.target = this.projectRoot.resolve("target");
+        this.classes = this.target.resolve("classes");
         this.generatedResources = this.target.resolve("generated-resources");
     }
 }

@@ -5,9 +5,9 @@ import de.ctoffer.commons.annotations.compile.TemplateFile;
 import de.ctoffer.commons.annotations.processor.base.AnnotationHandler;
 import de.ctoffer.commons.annotations.processor.base.ProcessingContext;
 import de.ctoffer.commons.annotations.processor.base.SimpleAnnotationProcessor;
+import de.ctoffer.commons.container.Pair;
 import de.ctoffer.commons.maven.EnvironmentLookup;
 import de.ctoffer.commons.maven.MavenProjectStructure;
-import de.ctoffer.commons.container.Pair;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -55,14 +55,16 @@ class TemplateFileHandler implements AnnotationHandler<TemplateFile> {
 
     @Override
     public void process(Element annotationElement, ProcessingContext processingContext) {
-        final String requestedResource = annotationElement.getAnnotation(TemplateFile.class).value();
+        final TemplateFile annotation = annotationElement.getAnnotation(TemplateFile.class);
+        final String requestedResource = annotation.value();
+        final TemplateFile.TargetLocation directory = annotation.targetDirectory();
 
         try {
             final EnvironmentLookup lookup = new EnvironmentLookup();
             final MavenProjectStructure mavenProjectStructure = getProjectStructure(processingContext);
 
             final Path templatePath = mavenProjectStructure.mainResources().resolve(requestedResource + ".template");
-            final Path concretePath = mavenProjectStructure.generatedResources().resolve(requestedResource);
+            final Path concretePath = mapPath(mavenProjectStructure, directory).resolve(requestedResource);
 
             updateMavenEnvironment(lookup, mavenProjectStructure);
 
@@ -80,6 +82,15 @@ class TemplateFileHandler implements AnnotationHandler<TemplateFile> {
                     "Error " + e + " during accessing resource: " + requestedResource
             );
         }
+    }
+
+    private static Path mapPath(final MavenProjectStructure structure, final TemplateFile.TargetLocation targetLocation) {
+        return switch (targetLocation) {
+            case MAIN_RESOURCES -> structure.mainResources();
+            case TEST_RESOURCES -> structure.testResources();
+            case GENERATED_RESOURCES -> structure.generatedResources();
+            case COMPILED_CLASSES -> structure.classes();
+        };
     }
 
     private void updateMavenEnvironment(final EnvironmentLookup lookup, final MavenProjectStructure structure) throws IOException, XmlPullParserException {
