@@ -1,5 +1,6 @@
 package de.ctoffer.commons.annotations.processor.template;
 
+import com.google.auto.service.AutoService;
 import de.ctoffer.commons.annotations.compile.TemplateFile;
 import de.ctoffer.commons.annotations.processor.base.AnnotationHandler;
 import de.ctoffer.commons.annotations.processor.base.ProcessingContext;
@@ -11,6 +12,10 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import javax.annotation.processing.Processor;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import java.io.FileReader;
@@ -26,6 +31,9 @@ import java.util.stream.Collectors;
 import static de.ctoffer.commons.annotations.processor.util.Util.getProjectStructure;
 import static java.util.Optional.ofNullable;
 
+@SupportedAnnotationTypes("de.ctoffer.commons.annotations.compile.Templatefile")
+@SupportedSourceVersion(SourceVersion.RELEASE_16)
+@AutoService(Processor.class)
 public class TemplateFileProcessor extends SimpleAnnotationProcessor<TemplateFile> {
 
     public TemplateFileProcessor() {

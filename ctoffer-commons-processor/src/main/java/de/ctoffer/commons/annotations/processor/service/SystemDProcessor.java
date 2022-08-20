@@ -27,7 +27,7 @@ import static java.util.stream.Collectors.joining;
 
 
 @SupportedAnnotationTypes("de.ctoffer.commons.annotations.compile.SystemDService")
-@SupportedSourceVersion(SourceVersion.RELEASE_12)
+@SupportedSourceVersion(SourceVersion.RELEASE_16)
 @AutoService(Processor.class)
 public class SystemDProcessor extends SimpleAnnotationProcessor<SystemDService> {
 
