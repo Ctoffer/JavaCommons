@@ -7,7 +7,7 @@
     <groupId>de.ctoffer</groupId>
     <artifactId>commons</artifactId>
     <packaging>pom</packaging>
-    <version>2022.8.20.8</version>
+    <version>2022.8.20.9</version>
 
     <distributionManagement>
         <snapshotRepository>
