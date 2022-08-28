@@ -179,6 +179,7 @@ public class RpiServiceInstaller {
                 "echo -n \"Updating init.d entry ${artifact_id} ... \"",
                 "echo -n \"${init_data}\" | base64 -d | gzip -df > \"/etc/init.d/${artifact_id}\"",
                 "sudo dos2unix \"/etc/init.d/${artifact_id}\" &> /dev/null",
+                "sudo chmod 755 \"/etc/init.d/${artifact_id}\"",
                 "sudo update-rc.d $artifact_id defaults",
                 "echo \"[OK]\"",
                 "",
