@@ -16,6 +16,7 @@ public class RpiArtifactTransfer {
     @Data
     @Builder
     @EqualsAndHashCode
+    @ToString
     private static class Input {
         private final String artifactId;
         private final String version;
