@@ -14,6 +14,8 @@ import java.util.Scanner;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.joining;
+
 public class StdIo {
 
     @Getter
@@ -33,13 +35,20 @@ public class StdIo {
             .flush(true);
     private static final PrintConfiguration standardConfiguration = standardBuilder.get().build();
 
-    public static void print(final Object... objects) {
+    public static void print(
+            final Object... objects
+    ) {
         print(standardConfiguration, objects);
     }
 
-    public static void print(final PrintConfiguration configuration, final Object... objects) {
+    public static void print(
+            final PrintConfiguration configuration,
+            final Object... objects
+    ) {
         try {
-            final String line = Arrays.stream(objects).map(Objects::toString).collect(Collectors.joining(configuration.separator));
+            final String line = Arrays.stream(objects)
+                    .map(Objects::toString)
+                    .collect(joining(configuration.separator));
             final byte[] data = (line + configuration.end).getBytes(StandardCharsets.UTF_8);
             configuration.file.write(data);
             if (configuration.flush) {
@@ -50,7 +59,10 @@ public class StdIo {
         }
     }
 
-    public static String input(final String message, final String defaultValue) {
+    public static String input(
+            final String message,
+            final String defaultValue
+    ) {
         if (Objects.nonNull(message) && message.length() > 0) {
             print(standardBuilder.get().end("").build(), message);
         }
@@ -65,7 +77,9 @@ public class StdIo {
         }
     }
 
-    public static String input(final String message) {
+    public static String input(
+            final String message
+    ) {
         if (Objects.nonNull(message) && message.length() > 0) {
             print(standardBuilder.get().end("").build(), message);
         }
