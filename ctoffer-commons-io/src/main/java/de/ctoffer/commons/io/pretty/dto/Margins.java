@@ -11,11 +11,19 @@ public record Margins(
     @Builder public Margins {}
 
     public static Margins zero() {
+        return singleValueMargin(0);
+    }
+
+    public static Margins singleValueMargin(int value) {
         return Margins.builder()
-                .top(0)
-                .right(0)
-                .bot(0)
-                .left(0)
+                .top(value)
+                .right(value)
+                .bot(value)
+                .left(value)
                 .build();
+    }
+
+    public static Margins one() {
+        return singleValueMargin(1);
     }
 }

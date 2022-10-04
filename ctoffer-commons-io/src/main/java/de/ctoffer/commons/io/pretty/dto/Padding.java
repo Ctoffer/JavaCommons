@@ -12,11 +12,19 @@ public record Padding(
     @Builder public Padding {}
 
     public static Padding zero() {
+        return singleValuePadding(0);
+    }
+
+    public static Padding singleValuePadding(int value) {
         return Padding.builder()
-                .top(0)
-                .right(0)
-                .bot(0)
-                .left(0)
+                .top(value)
+                .right(value)
+                .bot(value)
+                .left(value)
                 .build();
+    }
+
+    public static Padding one() {
+        return singleValuePadding(1);
     }
 }
