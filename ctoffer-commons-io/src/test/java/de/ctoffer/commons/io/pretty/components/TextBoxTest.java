@@ -24,16 +24,16 @@ class TextBoxTest {
         );
 
         Assertions.assertAll(
-                () -> Assertions.assertEquals("", lines.get(0)),
-                () -> Assertions.assertEquals("", lines.get(1)),
-                () -> Assertions.assertEquals("", lines.get(2)),
-                () -> Assertions.assertEquals("This", lines.get(3)),
-                () -> Assertions.assertEquals("is", lines.get(4)),
-                () -> Assertions.assertEquals("a", lines.get(5)),
-                () -> Assertions.assertEquals("test", lines.get(6)),
-                () -> Assertions.assertEquals("", lines.get(7)),
-                () -> Assertions.assertEquals("", lines.get(8)),
-                () -> Assertions.assertEquals("", lines.get(9))
+                () -> Assertions.assertEquals("          ", lines.get(0)),
+                () -> Assertions.assertEquals(" ┌──────┐ ", lines.get(1)),
+                () -> Assertions.assertEquals(" │      │ ", lines.get(2)),
+                () -> Assertions.assertEquals(" │ This │ ", lines.get(3)),
+                () -> Assertions.assertEquals(" │ is   │ ", lines.get(4)),
+                () -> Assertions.assertEquals(" │ a    │ ", lines.get(5)),
+                () -> Assertions.assertEquals(" │ test │ ", lines.get(6)),
+                () -> Assertions.assertEquals(" │      │ ", lines.get(7)),
+                () -> Assertions.assertEquals(" └──────┘ ", lines.get(8)),
+                () -> Assertions.assertEquals("          ", lines.get(9))
         );
     }
 }
