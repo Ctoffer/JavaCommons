@@ -45,10 +45,12 @@ public class TextBox implements Component {
         final var leftPadding = StringUtils.repeat(' ', options.padding().left());
         final var rightPadding = StringUtils.repeat(' ', options.padding().right());
 
-        int contentWidth = maxWidth - leftMargin.length() - rightMargin.length() - leftPadding.length() - rightMargin.length() - (options.showBorder() ? 2 : 0);
+        int paddedContentWidth = maxWidth - leftMargin.length() - rightMargin.length() - (options.showBorder() ? 2 : 0);
+        int contentWidth = paddedContentWidth  - leftPadding.length() - rightMargin.length();
+
         final var emptyPaddingLine = leftMargin
                 + style.vertical()
-                + StringUtils.repeat(' ', contentWidth)
+                + StringUtils.repeat(' ', paddedContentWidth)
                 + style.vertical()
                 + rightMargin;
 
@@ -58,7 +60,7 @@ public class TextBox implements Component {
         result.add(
                 leftMargin
                         + style.topLeft()
-                        + StringUtils.repeat(style.horizontal(), contentWidth)
+                        + StringUtils.repeat(style.horizontal(), paddedContentWidth)
                         + style.topRight()
                         + rightMargin
         );
@@ -67,7 +69,7 @@ public class TextBox implements Component {
         for (final var content : this.lines) {
             result.add(
                     leftMargin + options.style().vertical() + leftPadding
-                            + content
+                            + StringUtils.rightPad(content, contentWidth)
                             + rightPadding + options.style().vertical() + rightMargin
             );
         }
@@ -76,7 +78,7 @@ public class TextBox implements Component {
         result.add(
                 leftMargin
                         + style.botLeft()
-                        + StringUtils.repeat(style.horizontal(), contentWidth)
+                        + StringUtils.repeat(style.horizontal(), paddedContentWidth)
                         + style.botRight()
                         + rightMargin
         );
