@@ -11,4 +11,15 @@
 
     <artifactId>ctoffer-commons-io</artifactId>
 
+    <properties>
+        <commons.lang.version>3.12.0</commons.lang.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang.version}</version>
+        </dependency>
+    </dependencies>
 </project>
