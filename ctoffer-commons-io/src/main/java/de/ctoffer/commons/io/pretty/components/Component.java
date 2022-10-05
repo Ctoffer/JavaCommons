@@ -2,7 +2,6 @@ package de.ctoffer.commons.io.pretty.components;
 
 import de.ctoffer.commons.io.pretty.Style;
 import de.ctoffer.commons.io.pretty.dto.BorderVisibility;
-import de.ctoffer.commons.io.pretty.dto.Margins;
 import de.ctoffer.commons.io.pretty.dto.Padding;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +23,18 @@ public abstract class Component {
         this.padding = Padding.zero();
         this.visibility = BorderVisibility.allVisible();
     }
+
+    public int requestedWidth() {
+        return this.padding.left() + padding.right()
+                + toInt(visibility.left()) + toInt(visibility.right())
+                + requestedContentWidth();
+    }
+
+    private int toInt(final boolean b) {
+        return b ? 1 : 0;
+    }
+
+    protected abstract int requestedContentWidth();
 
     public abstract List<String> render(int maxWidth);
 

@@ -12,11 +12,24 @@ import java.util.stream.IntStream;
 public class Frame extends Component {
 
     private final List<String> lines;
+    private int maxSize = -1;
 
     public Frame(
             final String... followupText
     ) {
         this(Arrays.asList(followupText));
+    }
+
+    @Override
+    protected int requestedContentWidth() {
+        if (maxSize == -1) {
+            maxSize = lines.stream()
+                    .mapToInt(String::length)
+                    .max()
+                    .orElse(0);
+        }
+
+        return maxSize;
     }
 
     @Override
