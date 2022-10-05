@@ -16,13 +16,11 @@ import java.util.List;
 public abstract class Component {
 
     protected Style style;
-    protected Margins margins; // TODO (Ctoffer): Remove margins
     protected Padding padding;
     protected BorderVisibility visibility;
 
     protected Component() {
         this.style = Style.singleLineStyle();
-        this.margins = Margins.zero();
         this.padding = Padding.zero();
         this.visibility = BorderVisibility.allVisible();
     }
