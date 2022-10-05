@@ -1,6 +1,5 @@
 package de.ctoffer.commons.io.pretty.components;
 
-import de.ctoffer.commons.io.pretty.dto.RenderOptions;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
@@ -10,7 +9,9 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
-public class TextBox implements Component {
+public class TextBox extends Component {
+
+    // TODO (Ctoffer): Add a Frame class which only does the outer-border around any List<String>
 
     private final List<String> lines;
 
@@ -33,20 +34,18 @@ public class TextBox implements Component {
 
     @Override
     public List<String> render(
-            final RenderOptions options
+            final int maxWidth
     ) {
-        var style = options.style();
-        var maxWidth = options.maxWidth();
 
         final var emptyLine = StringUtils.repeat(' ', maxWidth);
 
-        final var leftMargin = StringUtils.repeat(' ', options.margins().left());
-        final var rightMargin = StringUtils.repeat(' ', options.margins().right());
-        final var leftPadding = StringUtils.repeat(' ', options.padding().left());
-        final var rightPadding = StringUtils.repeat(' ', options.padding().right());
+        final var leftMargin = StringUtils.repeat(' ', margins.left());
+        final var rightMargin = StringUtils.repeat(' ', margins.right());
+        final var leftPadding = StringUtils.repeat(' ', padding.left());
+        final var rightPadding = StringUtils.repeat(' ', padding.right());
 
-        int paddedContentWidth = maxWidth - leftMargin.length() - rightMargin.length() - (options.showBorder() ? 2 : 0);
-        int contentWidth = paddedContentWidth  - leftPadding.length() - rightMargin.length();
+        int paddedContentWidth = maxWidth - leftMargin.length() - rightMargin.length() - (visibility.left() ? 1 : 0) - (visibility.right() ? 1 : 0);
+        int contentWidth = paddedContentWidth - leftPadding.length() - rightPadding.length();
 
         final var emptyPaddingLine = leftMargin
                 + style.vertical()
@@ -56,33 +55,41 @@ public class TextBox implements Component {
 
         final var result = new ArrayList<String>();
 
-        IntStream.range(0, options.margins().top()).forEach(i -> result.add(emptyLine));
-        result.add(
-                leftMargin
-                        + style.topLeft()
-                        + StringUtils.repeat(style.horizontal(), paddedContentWidth)
-                        + style.topRight()
-                        + rightMargin
-        );
-        IntStream.range(0, options.padding().top()).forEach(i -> result.add(emptyPaddingLine));
+        IntStream.range(0, margins.top()).forEach(i -> result.add(emptyLine));
+        if (visibility.top()) {
+            result.add(
+                    leftMargin
+                            + (visibility.left() ? style.topLeft() : "")
+                            + StringUtils.repeat(style.horizontal(), paddedContentWidth)
+                            + (visibility.right() ? style.topRight() : "")
+                            + rightMargin
+            );
+        }
+        IntStream.range(0, padding.top()).forEach(i -> result.add(emptyPaddingLine));
 
         for (final var content : this.lines) {
             result.add(
-                    leftMargin + options.style().vertical() + leftPadding
+                    leftMargin
+                            + (visibility.left() ? style.vertical() : "")
+                            + leftPadding
                             + StringUtils.rightPad(content, contentWidth)
-                            + rightPadding + options.style().vertical() + rightMargin
+                            + rightPadding
+                            + (visibility.right() ? style.vertical() : "")
+                            + rightMargin
             );
         }
 
-        IntStream.range(0, options.padding().bot()).forEach(i -> result.add(emptyPaddingLine));
-        result.add(
-                leftMargin
-                        + style.botLeft()
-                        + StringUtils.repeat(style.horizontal(), paddedContentWidth)
-                        + style.botRight()
-                        + rightMargin
-        );
-        IntStream.range(0, options.margins().bot()).forEach(i -> result.add(emptyLine));
+        IntStream.range(0, padding.bot()).forEach(i -> result.add(emptyPaddingLine));
+        if (visibility.bot()) {
+            result.add(
+                    leftMargin
+                            + (visibility.left() ? style.botLeft() : "")
+                            + StringUtils.repeat(style.horizontal(), paddedContentWidth)
+                            + (visibility.right() ? style.botRight() : "")
+                            + rightMargin
+            );
+        }
+        IntStream.range(0, margins.bot()).forEach(i -> result.add(emptyLine));
 
         return result;
     }
