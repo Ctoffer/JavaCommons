@@ -24,6 +24,26 @@ public abstract class Component {
         this.visibility = BorderVisibility.allVisible();
     }
 
+    public boolean topVisibility() {
+        return this.visibility.top();
+    }
+
+    public boolean leftVisibility() {
+        return this.visibility.left();
+    }
+
+    public boolean rightVisibility() {
+        return this.visibility.right();
+    }
+
+    public boolean botVisibility() {
+        return this.visibility.bot();
+    }
+
+    public void topVisibility(boolean topVisibility) {
+        this.visibility.top(topVisibility);
+    }
+
     public int requestedWidth() {
         return this.padding.left() + padding.right()
                 + toInt(visibility.left()) + toInt(visibility.right())
