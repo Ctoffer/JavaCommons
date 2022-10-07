@@ -56,20 +56,89 @@ public class Table extends Component {
 
     @Override
     public List<String> render(int maxWidth) {
-        final var topDivider = createDivider(style.topLeft(), style.top(), style.topRight());
-        final var divider = createDivider(style.left(), style.center(), style.right());
-        final var botDivider = createDivider(style.botLeft(), style.bot(), style.botRight());
+        int[] additionalWidth = new int[columnHeaders.size()];
+        if (requestedWidth() < maxWidth) {
+            additionalWidth = partition(maxWidth - requestedWidth() + 2, additionalWidth.length);
+        }
+
+        final var topDivider = createDivider(style.topLeft(), style.top(), style.topRight(), additionalWidth);
+        final var divider = createDivider(style.left(), style.center(), style.right(), additionalWidth);
+        final var botDivider = createDivider(style.botLeft(), style.bot(), style.botRight(), additionalWidth);
 
         List<String> result = new ArrayList<>();
+
+        result.add(topDivider);
+        result.add(createLine(columnHeaders, additionalWidth));
+        result.add(divider);
+        for (final var row : rowData) {
+            result.add(createLine(row, additionalWidth));
+        }
+        result.add(botDivider);
+
+        compressResultIfNecessary(result, maxWidth);
 
         return result;
     }
 
-    private String createDivider(final char first, final char filler, final char last) {
+    private String createLine(
+            final List<String> content,
+            final int[] additionalWidth
+    ) {
+        final var columnPad = StringUtils.repeat(' ', columnPadding);
+        final var contentBuilder = new ArrayList<String>();
+
+        for (int i = 0; i < content.size(); ++i) {
+            contentBuilder.add(
+                    columnPad
+                            + StringUtils.leftPad(content.get(i), columnWidth[i] + additionalWidth[i])
+                            + columnPad
+            );
+        }
+
+        return style.vertical()
+                + String.join("" + style.vertical(), contentBuilder)
+                + style.vertical();
+    }
+
+    private String createDivider(
+            final char first,
+            final char filler,
+            final char last,
+            final int[] additionalWidth
+    ) {
         return first
-                + IntStream.of(columnWidth)
-                .mapToObj(i -> StringUtils.repeat(style.horizontal(), i))
+                + IntStream.range(0, columnWidth.length)
+                .mapToObj(i -> StringUtils.repeat(style.horizontal(), columnWidth[i] + additionalWidth[i]))
                 .collect(Collectors.joining("" + filler))
                 + last;
+    }
+
+    private int[] partition(int amount, int numberOfPartitions) {
+        final int[] result = new int[numberOfPartitions];
+        int toCopy = amount;
+        int i = 0;
+        while (toCopy > 0) {
+            result[i] += 1;
+            --toCopy;
+            i = (++i) % result.length;
+        }
+
+        return result;
+    }
+
+    private void compressResultIfNecessary(final List<String> result, int maxWidth) {
+        if (requestedWidth() - 2 > maxWidth) {
+            var partitions = partition(maxWidth - 3, 2);
+
+            for (int i = 0; i < result.size(); ++i) {
+                var line = result.get(i);
+                result.set(
+                        i,
+                        line.substring(0, partitions[0])
+                                + "..."
+                                + line.substring(line.length() - partitions[1])
+                );
+            }
+        }
     }
 }
