@@ -2,6 +2,7 @@ package de.ctoffer.commons.transfer;
 
 import com.jcraft.jsch.*;
 import de.ctoffer.commons.functional.ThrowingConsumer;
+import de.ctoffer.commons.io.StdIo;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -70,9 +71,12 @@ public class RpiArtifactTransfer {
             ) {
                 final var sftp = channel.object();
 
-                System.out.println("Transfer " + localInstaller + " to remote " + input.sftpUser + "@" + input.sftpHost + ":" + input.sftpPort);
+                StdIo.print(
+                        "Transfer", localInstaller, "to remote",
+                        input.sftpUser + "@" + input.sftpHost + ":" + input.sftpPort
+                );
                 sftp.put(localInstaller.toString(), "./");
-                System.out.println("Transfer cnf file");
+                StdIo.print("Transfer cnf file");
                 sftp.put(toInputStream(new StringReader("")), "./cnf/" + installerName + ".cnf");
             }
         } catch (final JSchException | SftpException | IOException e) {
