@@ -1,35 +1,21 @@
-package de.ctoffer.commons.storage;
+package de.ctoffer.commons.storage.base;
+
+import de.ctoffer.commons.storage.api.Identifiable;
+import de.ctoffer.commons.storage.api.StorageConcept;
+import de.ctoffer.commons.storage.exception.RegisterException;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+@RequiredArgsConstructor
 public abstract class Register<I, T extends Identifiable<I>> {
-    public static class RegisterException extends RuntimeException {
-        public RegisterException(final String message) {
-            super(message);
-        }
-    }
 
     protected final String name;
     protected final Function<I, T> constructor;
     protected final StorageConcept<I, T> associatedStorage;
-
-    protected final Map<String, T> internalStorage;
-
-    public Register(
-            final String name,
-            final Function<I, T> constructor,
-            final StorageConcept<I, T> associatedStorage
-    ) {
-        this.name = name;
-        this.internalStorage = new HashMap<>();
-
-        this.constructor = constructor;
-        this.associatedStorage = associatedStorage;
-    }
-
 
     public T newObject() {
         I id = nextFreeId();
@@ -62,7 +48,7 @@ public abstract class Register<I, T extends Identifiable<I>> {
             put(id, associatedStorage.load(id));
         }
 
-        return internalStorage.get(id);
+        return retrieve(id);
     }
 
     protected abstract T retrieve(I id);
@@ -80,10 +66,6 @@ public abstract class Register<I, T extends Identifiable<I>> {
         associatedStorage.delete(object);
         put(id, null);
         return id;
-    }
-
-    public int totalSpace() {
-        return this.internalStorage.size();
     }
 
 }

@@ -1,4 +1,4 @@
-package de.ctoffer.commons.storage;
+package de.ctoffer.commons.storage.exception;
 
 public class StorageException extends RuntimeException {
     public StorageException(final String msg) {

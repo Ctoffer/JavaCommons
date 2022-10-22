@@ -1,9 +1,9 @@
-package de.ctoffer.commons.storage;
+package de.ctoffer.commons.storage.base;
 
 import de.ctoffer.commons.exception.unchecked.UncheckedExceptions;
+import de.ctoffer.commons.storage.api.Nameable;
 import lombok.RequiredArgsConstructor;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;

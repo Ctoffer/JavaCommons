@@ -1,6 +1,7 @@
-package de.ctoffer.commons.storage;
+package de.ctoffer.commons.storage.util;
 
 import de.ctoffer.commons.exception.unchecked.UncheckedExceptions;
+import de.ctoffer.commons.storage.exception.StorageException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 import static java.util.Objects.requireNonNull;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-final class Serial {
+public final class Serial {
 
     public static void write(
             final Path destination,
