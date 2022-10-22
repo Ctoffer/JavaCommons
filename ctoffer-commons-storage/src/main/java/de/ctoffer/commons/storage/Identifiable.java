@@ -1,5 +1,5 @@
 package de.ctoffer.commons.storage;
 
-public interface Identifiable {
-    int id();
+public interface Identifiable <I>{
+    I id();
 }

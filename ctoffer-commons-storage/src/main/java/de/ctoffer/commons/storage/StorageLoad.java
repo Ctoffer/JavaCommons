@@ -1,5 +1,5 @@
 package de.ctoffer.commons.storage;
 
-public interface StorageLoad<T> {
-    T load(int id);
+public interface StorageLoad<I, T> {
+    T load(I id);
 }

@@ -1,110 +1,89 @@
 package de.ctoffer.commons.storage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
-import java.util.function.IntFunction;
+import java.util.function.Function;
 
-public class Register<T extends Identifiable> {
+public abstract class Register<I, T extends Identifiable<I>> {
     public static class RegisterException extends RuntimeException {
         public RegisterException(final String message) {
             super(message);
         }
     }
 
-    private final String name;
-    private final List<T> internalStorage;
-    private final List<Integer> freeIds;
+    protected final String name;
+    protected final Function<I, T> constructor;
+    protected final StorageConcept<I, T> associatedStorage;
 
-    private final IntFunction<T> constructor;
+    protected final Map<String, T> internalStorage;
 
-    private final StorageConcept<T> associatedStorage;
-
-    public Register(final String name,
-                    final IntFunction<T> constructor,
-                    final StorageConcept<T> associatedStorage) {
+    public Register(
+            final String name,
+            final Function<I, T> constructor,
+            final StorageConcept<I, T> associatedStorage
+    ) {
         this.name = name;
-        this.internalStorage = new ArrayList<>();
-        this.freeIds = new ArrayList<>();
+        this.internalStorage = new HashMap<>();
 
         this.constructor = constructor;
         this.associatedStorage = associatedStorage;
     }
 
+
     public T newObject() {
-        int id = nextFreeId();
+        I id = nextFreeId();
         T result = constructor.apply(id);
         addAndSaveToStorage(result);
 
         return result;
     }
 
-    private int nextFreeId() {
-        int result;
-        if (freeIds.isEmpty()) {
-            result = internalStorage.size();
-        } else {
-            result = freeIds.remove(0);
-        }
-
-        return result;
-    }
+    protected abstract I nextFreeId();
 
     private void addAndSaveToStorage(final T object) {
-        int index = object.id();
-
-        if (index >= internalStorage.size()) {
-            internalStorage.add(index, object);
-        } else {
-            internalStorage.set(index, object);
-        }
+        var id = object.id();
+        put(id, object);
         associatedStorage.save(object);
     }
 
-    public Optional<T> getObjectById(int id) {
-        Optional<T> result = Optional.empty();
+    protected abstract void put(I id, T object);
 
-        if (!freeIds.contains(id)) {
-            result = Optional.of(loadObjectFromStorageIfNecessary(id));
-        }
-
-        return result;
+    public Optional<T> getObjectById(
+            final I id
+    ) {
+        return Optional.of(loadObjectFromStorageIfNecessary(id));
     }
 
-    private T loadObjectFromStorageIfNecessary(int id) {
-        if (internalStorage.get(id) == null) {
-            internalStorage.set(id, associatedStorage.load(id));
+    protected T loadObjectFromStorageIfNecessary(
+            final I id
+    ) {
+        if (retrieve(id) == null) {
+            put(id, associatedStorage.load(id));
         }
 
         return internalStorage.get(id);
     }
 
+    protected abstract T retrieve(I id);
+
     public void updateObject(final T object) {
-        int id = object.id();
-        if (object != internalStorage.get(object.id())) {
+        var id = object.id();
+        if (object != retrieve(object.id())) {
             throw new RegisterException("Given object with id " + id + " does not match already stored instance!");
         }
         associatedStorage.save(object);
     }
 
-    public void deleteObject(final T object) {
-        int id = newObject().id();
+    public I deleteObject(final T object) {
+        var id = newObject().id();
         associatedStorage.delete(object);
-        internalStorage.set(id, null);
-        freeIds.add(id);
-        Collections.sort(freeIds);
-    }
-
-    public int usedSpace() {
-        return totalSpace() - freeSpace();
+        put(id, null);
+        return id;
     }
 
     public int totalSpace() {
         return this.internalStorage.size();
     }
 
-    public int freeSpace() {
-        return this.freeIds.size();
-    }
 }
