@@ -167,7 +167,7 @@ public class Storage {
         final StorageGroup<T> group = (StorageGroup<T>) groups.get(cls);
         final String name = group.createFileNameFor(obj);
         objectNames.get(cls).remove(name);
-        final Path file = group.getDirectory(home).resolve(name);
+        final Path file = group.directoryFor(home).resolve(name);
         Files.delete(file);
         updateMetaData();
     }

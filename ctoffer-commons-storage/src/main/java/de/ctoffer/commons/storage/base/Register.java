@@ -5,8 +5,6 @@ import de.ctoffer.commons.storage.api.StorageConcept;
 import de.ctoffer.commons.storage.exception.RegisterException;
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 

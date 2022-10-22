@@ -27,7 +27,7 @@ public abstract class StorageGroup<T> implements Nameable {
             final Path home,
             final T o
     ) {
-        final Path directory = getDirectory(home);
+        final Path directory = directoryFor(home);
         String fname = createFileNameFor(o);
         final Path filePath = directory.resolve(fname);
         Optional.of(filePath)
@@ -37,9 +37,10 @@ public abstract class StorageGroup<T> implements Nameable {
         return fname;
     }
 
-    public Path getDirectory(final Path home) {
+    public Path directoryFor(final Path home) {
         return home.resolve(name);
     }
+
 
     public abstract String createFileNameFor(T obj);
 
@@ -49,7 +50,7 @@ public abstract class StorageGroup<T> implements Nameable {
             final Path home,
             final String objName
     ) {
-        var directory = getDirectory(home);
+        var directory = directoryFor(home);
         return loadFromStorage(directory, objName);
     }
 
