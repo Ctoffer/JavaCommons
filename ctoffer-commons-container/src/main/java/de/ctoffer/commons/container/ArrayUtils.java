@@ -1,5 +1,7 @@
 package de.ctoffer.commons.container;
 
+import de.ctoffer.commons.container.primitive.CharIterator;
+
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -7,6 +9,7 @@ import java.util.function.IntFunction;
 
 public enum ArrayUtils {
     ;
+
 
     public static void checkIfArray(final Object maybeArray) {
         if (isNotArray(maybeArray)) {
@@ -54,9 +57,18 @@ public enum ArrayUtils {
         return () -> iterator(array);
     }
 
-    public static <E> Iterator<E> iterator(E[] array) {
-        return new Iterator<E>() {
-            private int position = 0;
+    public static <E> Iterator<E> iterator(
+            final E[] array
+    ) {
+        return iterator(array, 0);
+    }
+
+    public static <E> Iterator<E> iterator(
+            final E[] array,
+            final int initialPosition
+    ) {
+        return new Iterator<>() {
+            private int position = initialPosition;
 
             @Override
             public boolean hasNext() {
@@ -69,6 +81,37 @@ public enum ArrayUtils {
                     throw new NoSuchElementException("Array of length " + array.length + " has no entry at position " + position);
                 }
                 return array[position++];
+            }
+        };
+    }
+
+
+    public static CharIterator iterator(
+            final char[] array
+    ) {
+        return new CharIterator() {
+            private int position = 0;
+
+            @Override
+            public boolean hasNext() {
+                return position < array.length;
+            }
+
+            @Override
+            public char next() {
+                if (position >= array.length) {
+                    throw new NoSuchElementException("Array of length " + array.length + " has no entry at position " + position);
+                }
+                return array[position++];
+            }
+
+            @Override
+            public Iterator<Character> boxed() {
+                final Character[] characters = new Character[array.length];
+                for (int i = 0; i < array.length; ++i) {
+                    characters[i] = array[i];
+                }
+                return iterator(characters, position);
             }
         };
     }

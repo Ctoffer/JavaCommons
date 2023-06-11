@@ -1,10 +1,11 @@
 package de.ctoffer.commons.container;
 
+import de.ctoffer.commons.container.primitive.CharIterator;
+import lombok.RequiredArgsConstructor;
+
 import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.text.CharacterIterator;
+import java.util.*;
 import java.util.function.IntFunction;
 import java.util.function.IntSupplier;
 
@@ -466,9 +467,9 @@ public enum AccessUtils {
         return arraySlice(array, start, stop, step);
     }
 
-    // ================================================================================================================
-    // Slice: Array internal
-    // ================================================================================================================
+// ================================================================================================================
+// Slice: Array internal
+// ================================================================================================================
 
     static <T> T arraySlice(final Object array, Integer start, Integer stop, Integer step) {
         return arraySlice(array, new SliceArguments(start, stop, step));
@@ -546,7 +547,122 @@ public enum AccessUtils {
             throw new IllegalArgumentException("'step' must be non-zero.");
         }
     }
+
+// ================================================================================================================
+// In: char[]
+// ================================================================================================================
+
+    public static CharacterElementProperties element(
+            final char value
+    ) {
+        return new CharacterElementProperties(value);
+    }
+
+    @RequiredArgsConstructor
+    public static class CharacterElementProperties {
+        private final char value;
+
+        public boolean in(
+                final char[] array
+        ) {
+            return in(iterator(array));
+        }
+
+        private boolean in(
+                final CharIterator iterator
+        ) {
+            while (iterator.hasNext()) {
+                final var element = iterator.next();
+
+                if (value == element) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public boolean in(
+                final Collection<Character> collection
+        ) {
+            for(final var element : collection) {
+                if (value == element) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public boolean notIn(
+                final char[] array
+        ) {
+            return !in(array);
+        }
+
+        public boolean notIn(
+                final Collection<Character> collection
+        ) {
+            return !in(collection);
+        }
+    }
+
+// ================================================================================================================
+// In: Object[]
+// ================================================================================================================
+
+    public static <T> GenericElementProperties<T> element(
+            final T value
+    ) {
+        return new GenericElementProperties<>(value);
+    }
+
+    @RequiredArgsConstructor
+    public static class GenericElementProperties<T> {
+        private final T value;
+
+        public boolean in(
+                final T[] array
+        ) {
+            return in(iterator(array));
+        }
+
+        private boolean in(
+                final Iterator<T> iterator
+        ) {
+            while (iterator.hasNext()) {
+                final var element = iterator.next();
+
+                if (value == null && element == null) {
+                    return true;
+                } else if (value != null && value.equals(element)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public boolean in(
+                final Collection<T> collection
+        ) {
+            return in(collection.iterator());
+        }
+
+        public boolean notIn(
+                final T[] array
+        ) {
+            return !in(array);
+        }
+
+        public boolean notIn(
+                final Collection<T> collection
+        ) {
+            return !in(collection);
+        }
+    }
 }
+
 
 class SliceArguments {
     private Integer start;

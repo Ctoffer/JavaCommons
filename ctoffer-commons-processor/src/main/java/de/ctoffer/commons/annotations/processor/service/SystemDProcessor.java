@@ -49,7 +49,10 @@ public class SystemDProcessor extends SimpleAnnotationProcessor<SystemDService> 
 class SystemDAnnotationHandler implements AnnotationHandler<SystemDService> {
 
     @Override
-    public void process(Element annotationElement, ProcessingContext processingContext) {
+    public void process(
+            final Element annotationElement,
+            final ProcessingContext processingContext
+    ) {
         var serviceData = annotationElement.getAnnotation(SystemDService.class);
 
         try {
