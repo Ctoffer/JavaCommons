@@ -28,7 +28,7 @@ public class VerticalLayout extends Container {
 
         if (!(components.isEmpty())) {
             result.addAll(components.get(0).render(maxWidth));
-            indices[0] = result.size();
+            indices[0] = result.size() - 1;
 
             for (int i = 1; i < components.size(); ++i) {
                 var component = components.get(i);
@@ -39,7 +39,7 @@ public class VerticalLayout extends Container {
                 }
 
                 result.addAll(component.render(maxWidth));
-                indices[i] = result.size();
+                indices[i] = result.size() -1;
                 component.topVisibility(topVisibility);
             }
 
@@ -52,10 +52,9 @@ public class VerticalLayout extends Container {
     }
 
     private void mergeAllLines(final List<String> result, final int[] indices) {
-        for (int i = 0; i < indices.length - 1; ++i) {
-            int index = indices[i];
-            var currentLine = result.get(index).toCharArray();
-            var nextLine = result.get(index + 1).toCharArray();
+        for (int i = 0; i < result.size() - 1; ++i) {
+            var currentLine = result.get(i).toCharArray();
+            var nextLine = result.get(i + 1).toCharArray();
 
             mergeAdjacentLines(currentLine, nextLine);
 

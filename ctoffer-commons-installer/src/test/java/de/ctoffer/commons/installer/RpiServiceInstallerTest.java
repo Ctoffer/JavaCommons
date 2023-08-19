@@ -11,10 +11,10 @@ class RpiServiceInstallerTest {
     @Test
     void testBase64Text() {
         final String expected =
-                "IyEvYmluL2Jhc2gNCg0KcGlkPSQoIHBncmVwIC1mIGN0b2ZmZXIteXQtc2VydmljZS0yMDIyLjgu\n" +
-                "MTIuMS5qYXIgKQ0KDQppZiBbWyAhIC16ICIke3BpZH0iIF1dOyB0aGVuDQogIGZvciBjaWQgaW4g\n" +
-                "JChwZ3JlcCAtUCAke3BpZH0pOyBkbyBzdWRvIGtpbGwgLTkgJGNpZDsgZG9uZQ0KICBzdWRvIGtp\n" +
-                "bGwgLTkgJHBpZA0KZmkNCg==";
+                "IyEvYmluL2Jhc2gKCnBpZD0kKCBwZ3JlcCAtZiBjdG9mZmVyLXl0LXNlcnZpY2UtMjAyMi44LjEy\n" +
+                "LjEuamFyICkKCmlmIFtbICEgLXogIiR7cGlkfSIgXV07IHRoZW4KICBmb3IgY2lkIGluICQocGdy\n" +
+                "ZXAgLVAgJHtwaWR9KTsgZG8gc3VkbyBraWxsIC05ICRjaWQ7IGRvbmUKICBzdWRvIGtpbGwgLTkg\n" +
+                "JHBpZApmaQo=";
 
         var path = Paths.get("src", "test", "resources", "stop.sh");
         var actual = RpiServiceInstaller.base64(path);
