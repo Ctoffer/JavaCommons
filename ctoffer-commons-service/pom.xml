@@ -5,14 +5,14 @@
     <parent>
         <artifactId>commons</artifactId>
         <groupId>de.ctoffer</groupId>
-        <version>2023.6.11.0</version>
+        <version>2024.3.10.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ctoffer-commons-service</artifactId>
 
     <properties>
-        <jackson.version>2.13.3</jackson.version>
+        <jackson.version>2.16.2</jackson.version>
     </properties>
 
     <dependencies>

@@ -7,19 +7,19 @@
     <groupId>de.ctoffer</groupId>
     <artifactId>commons</artifactId>
     <packaging>pom</packaging>
-    <version>2023.6.11.0</version>
+    <version>2024.3.10.2</version>
 
     <distributionManagement>
         <snapshotRepository>
             <id>reposilite-repository-snapshots</id>
             <name>Reposilite Repository</name>
-            <url>http://192.168.178.54:8007/snapshots</url>
+            <url>http://192.168.178.124:8007/snapshots</url>
         </snapshotRepository>
 
         <repository>
             <id>reposilite-repository-releases</id>
             <name>Reposilite Repository</name>
-            <url>http://192.168.178.54:8007/releases</url>
+            <url>http://192.168.178.124:8007/releases</url>
         </repository>
     </distributionManagement>
 
@@ -45,15 +45,31 @@
     </modules>
 
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <lombok.version>1.18.24</lombok.version>
-        <junit-jupiter.version>5.8.2</junit-jupiter.version>
+        <lombok.version>1.18.30</lombok.version>
+        <junit-jupiter.version>5.10.2</junit-jupiter.version>
     </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.12.1</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <dependencies>
         <dependency>
@@ -83,17 +99,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>
